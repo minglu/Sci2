@@ -32,30 +32,7 @@ public class GetFaceBookData implements Algorithm {
 		this.logger = (LogService) ciShellContext.getService(LogService.class
 				.getName());
 	}
-
-	public Data[] execute() throws AlgorithmExecutionException {
-		this.logger.log(LogService.LOG_INFO, "Opening Facebook login page");
-		// logger.log(LogService.LOG_WARNING, "Warning msg");
-		// logger.log(LogService.LOG_ERROR, "Error msg");
-		// logger.log(LogService.LOG_DEBUG, "Debug msg");
-		
-		try {
-			URI url = new URI("https://www.facebook.com/dialog/oauth?client_id=283202715139589&redirect_uri=https://morning-fjord-1741.herokuapp.com/token.php&scope=manage_friendlists&response_type=token");		
-			Desktop.getDesktop().browse(url);			
-		} catch (URISyntaxException e1) {
-			logger.log(LogService.LOG_INFO, e1.getMessage());
-		} catch (IOException e1) {
-			logger.log(LogService.LOG_INFO, e1.getMessage());
-		}
-		
-		String input =  JOptionPane.showInputDialog("Enter Access Token:");
-		
-		this.logger.log(LogService.LOG_INFO, "Access Token: "+ input);
-		String data = "access_token="+input;
-		String returnData = httpRequest(data);
-		return null;
-	}
-
+	
 	public String httpRequest(String data) {
 		String responseBody = "";
 		try {						
@@ -82,4 +59,29 @@ public class GetFaceBookData implements Algorithm {
 		} 
 		return responseBody;
 	}
+	
+	public Data[] execute() throws AlgorithmExecutionException {
+		this.logger.log(LogService.LOG_INFO, "Opening Facebook login page");
+		// logger.log(LogService.LOG_WARNING, "Warning msg");
+		// logger.log(LogService.LOG_ERROR, "Error msg");
+		// logger.log(LogService.LOG_DEBUG, "Debug msg");
+		
+		try {
+			URI url = new URI("https://www.facebook.com/dialog/oauth?client_id=283202715139589&redirect_uri=https://morning-fjord-1741.herokuapp.com/token.php&scope=manage_friendlists&response_type=token");		
+			Desktop.getDesktop().browse(url);			
+		} catch (URISyntaxException e1) {
+			logger.log(LogService.LOG_INFO, e1.getMessage());
+		} catch (IOException e1) {
+			logger.log(LogService.LOG_INFO, e1.getMessage());
+		}
+		
+		String input =  JOptionPane.showInputDialog("Enter Access Token:");
+		
+		this.logger.log(LogService.LOG_INFO, "Access Token: "+ input);
+		String data = "access_token="+input;
+		String returnData = httpRequest(data);
+		return null;
+	}
+
+
 }
