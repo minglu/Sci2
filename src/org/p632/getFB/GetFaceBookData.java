@@ -33,34 +33,7 @@ public class GetFaceBookData implements Algorithm {
 				.getName());
 	}
 	
-	public String httpRequest(String data) {
-		String responseBody = "";
-		try {						
-			HttpClient client = new HttpClient();
-			GetMethod method = new GetMethod(
-					"https://graph.facebook.com/me?"+data);
-			int returnCode;
-
-			returnCode = client.executeMethod(method);
-
-			if (returnCode == HttpStatus.SC_NOT_IMPLEMENTED) {
-				logger.log(LogService.LOG_ERROR,
-						"The Post method is not implemented by this URI");
-			} else {
-				logger.log(LogService.LOG_DEBUG, "Posted");
-			}
-			responseBody = method.getResponseBodyAsString();
-			logger.log(LogService.LOG_INFO, "response:" + responseBody);
-			method.releaseConnection();
-		} catch (HttpException e1) {
-			logger.log(LogService.LOG_INFO, e1.getMessage());
-		} catch (IOException e1) {
-			logger.log(LogService.LOG_INFO, e1.getMessage());
-		} 
-		return responseBody;
-	}
-	
-	public Data[] execute() throws AlgorithmExecutionException {
+	public Data[] execute() {
 		this.logger.log(LogService.LOG_INFO, "Opening Facebook login page");
 		// logger.log(LogService.LOG_WARNING, "Warning msg");
 		// logger.log(LogService.LOG_ERROR, "Error msg");
@@ -79,9 +52,36 @@ public class GetFaceBookData implements Algorithm {
 		
 		this.logger.log(LogService.LOG_INFO, "Access Token: "+ input);
 		String data = "access_token="+input;
-		String returnData = httpRequest(data);
+		httpRequest(data);
 		return null;
 	}
 
+	public String httpRequest(String data){
+		String responseBody = "";
+		int returnCode;
+		String url = "https://graph.facebook.com/me?"+data;
+
+//		HttpClient client = new HttpClient();
+//		GetMethod method = new GetMethod(url);
+//		try {						
+//			returnCode = client.executeMethod(method);
+//			if (returnCode == HttpStatus.SC_NOT_IMPLEMENTED) {
+//				logger.log(LogService.LOG_ERROR,
+//						"The Post method is not implemented by this URI");
+//			} else {
+//				logger.log(LogService.LOG_DEBUG, "Posted");
+//			}
+//			responseBody = method.getResponseBodyAsString();
+//			logger.log(LogService.LOG_INFO, "response:" + responseBody);
+//			method.releaseConnection();
+//		} catch (HttpException e1) {
+//			this.logger.log(LogService.LOG_INFO, e1.getMessage());
+//		} catch (IOException e1) {
+//			this.logger.log(LogService.LOG_INFO, e1.getMessage()); 
+//		} finally {
+//			method.releaseConnection();
+//		}
+		return responseBody;
+	}
 
 }
