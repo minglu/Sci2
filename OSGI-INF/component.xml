@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="org.p632.getFB.GetFaceBookData.component" immediate="false">
+	<implementation class="org.p632.getFB.GetFaceBookDataFactory"/>
+	<properties entry="OSGI-INF/algorithm.properties"/>
+	
+	<service>
+		<provide interface=
+			"org.cishell.framework.algorithm.AlgorithmFactory"/>
+	</service>
+</component>

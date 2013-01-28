@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
+	<OCD name="Get FaceBook Data" id="org.p632.getFB.GetFaceBookData.OCD"
+		 description="Get FaceBook Data via API ">
+	</OCD>
+	<Designate pid="org.p632.getFB.GetFaceBookData">
+		<Object ocdref="org.p632.getFB.GetFaceBookData.OCD" />
+	</Designate>
+</metatype:MetaData>
