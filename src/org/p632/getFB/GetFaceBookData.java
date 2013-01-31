@@ -2,21 +2,27 @@ package org.p632.getFB;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Dictionary;
 
 import javax.swing.JOptionPane;
 
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.GetMethod;
+//import org.apache.commons.httpclient.HttpClient;
+//import org.apache.commons.httpclient.HttpException;
+//import org.apache.commons.httpclient.HttpStatus;
+//import org.apache.commons.httpclient.methods.GetMethod;
 import org.cishell.framework.CIShellContext;
 import org.cishell.framework.algorithm.Algorithm;
 import org.cishell.framework.algorithm.AlgorithmExecutionException;
 import org.cishell.framework.data.Data;
 import org.osgi.service.log.LogService;
+import org.p632.getFB.DownloadHandler.InvalidUrlException;
+import org.p632.getFB.DownloadHandler.NetworkConnectionException;
 
 public class GetFaceBookData implements Algorithm {
 	private Data[] data;
@@ -33,7 +39,7 @@ public class GetFaceBookData implements Algorithm {
 				.getName());
 	}
 	
-	public Data[] execute() {
+	public Data[] execute() throws AlgorithmExecutionException{
 		this.logger.log(LogService.LOG_INFO, "Opening Facebook login page");
 		// logger.log(LogService.LOG_WARNING, "Warning msg");
 		// logger.log(LogService.LOG_ERROR, "Error msg");
@@ -52,15 +58,16 @@ public class GetFaceBookData implements Algorithm {
 		
 		this.logger.log(LogService.LOG_INFO, "Access Token: "+ input);
 		String data = "access_token="+input;
-		httpRequest(data);
+//		httpRequest(data);//httpclient get request
+		this.logger.log(LogService.LOG_INFO, "Response: "+ networkDownloader(data));
 		return null;
 	}
 
-	public String httpRequest(String data){
-		String responseBody = "";
-		int returnCode;
-		String url = "https://graph.facebook.com/me?"+data;
-
+//	public String httpRequest(String data){
+//		String responseBody = "";
+//		int returnCode;
+//		String url = "https://graph.facebook.com/me?"+data;
+//
 //		HttpClient client = new HttpClient();
 //		GetMethod method = new GetMethod(url);
 //		try {						
@@ -81,7 +88,24 @@ public class GetFaceBookData implements Algorithm {
 //		} finally {
 //			method.releaseConnection();
 //		}
-		return responseBody;
+//		return responseBody;
+//	}
+	
+	public String networkDownloader(String data){
+		try{
+			URL url = new URL("https://graph.facebook.com/me?"+data);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();		
+			connection.setRequestMethod("GET");		
+			return DownloadHandler.getResponse(connection);
+		} catch (IOException e1) {
+			logger.log(LogService.LOG_INFO, e1.getMessage());
+		} catch (InvalidUrlException e1) {
+			logger.log(LogService.LOG_INFO, e1.getMessage());
+		} catch (NetworkConnectionException e1) {
+			logger.log(LogService.LOG_INFO, e1.getMessage());
+		} 
+		return "No data"; 
+
 	}
 
 }
